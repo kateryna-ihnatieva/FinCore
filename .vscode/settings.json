@@ -1,0 +1,29 @@
+{
+  // Configure black, flake and isort
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "black-formatter.importStrategy": "fromEnvironment",
+  "black-formatter.args": ["--config", "pyproject.toml"],
+  "isort.importStrategy": "fromEnvironment",
+  "flake8.enabled": true,
+  "flake8.args": ["--config", ".flake8"],
+  "flake8.importStrategy": "fromEnvironment",
+  // Hide pycache in IDE
+  "files.exclude": {
+    "**/__pycache__/": true,
+    "**/.idea/": true,
+    "**/*.egg-info/": true
+  },
+  "search.exclude": {
+    "**/__pycache__/": true,
+    "**/.idea/": true,
+    "**/*.egg-info/": true
+  }
+}
