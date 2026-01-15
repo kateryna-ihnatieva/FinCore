@@ -6,6 +6,7 @@ Flask-SQLAlchemy==3.0.5
 # Database
 psycopg2-binary==2.9.9
 SQLAlchemy==2.0.22
+alembic>=1.11
 
 # Validation / Settings
 pydantic==2.5.2
