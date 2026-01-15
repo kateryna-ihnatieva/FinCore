@@ -1,41 +1,25 @@
 from datetime import datetime
-from typing import Literal
-from uuid import uuid4
+from enum import Enum
+
+from pydantic import BaseModel, Field
 
 from app.domain.value_objects.money import Money
 
 
-class Transaction:
-    """Aggregate root for transaction"""
+class TransactionStatus(str, Enum):
+    """Status of a transaction"""
 
-    STATUS_PENDING = "pending"
-    STATUS_COMPLETED = "completed"
-    STATUS_FAILED = "failed"
+    PENDING = "pending"
+    COMPLETED = "completed"
+    FAILED = "failed"
 
-    def __init__(
-        self,
-        from_account: str | None,
-        to_account: str | None,
-        amount: Money,
-        status: Literal[STATUS_PENDING, STATUS_COMPLETED, STATUS_FAILED] = STATUS_PENDING,
-        timestamp: datetime = None,
-        pk: str = None
-    ):
-        self.pk = pk or str(uuid4())
-        self.from_account = from_account
-        self.to_account = to_account
-        self.amount = amount
-        self.status = status
-        self.timestamp = timestamp or datetime.now()
 
-    def mark_as_completed(self):
-        """Mark the transaction as completed"""
-        self.status = self.STATUS_COMPLETED
+class Transaction(BaseModel):
+    """Represents a transfer between accounts."""
 
-    def mark_as_failed(self):
-        """Mark the transaction as failed"""
-        self.status = self.STATUS_FAILED
-
-    def mark_as_pending(self):
-        """Mark the transaction as pending"""
-        self.status = self.STATUS_PENDING
+    pk: str = Field(..., description="The primary key of the transaction")
+    from_account: str = Field(..., description="Source account PK")
+    to_account: str = Field(..., description="Destination account PK")
+    amount: Money = Field(..., description="Amount being transferred")
+    timestamp: datetime = Field(default_factory=datetime.now)
+    status: TransactionStatus = Field(default=TransactionStatus.PENDING, description="Status of the transaction")
